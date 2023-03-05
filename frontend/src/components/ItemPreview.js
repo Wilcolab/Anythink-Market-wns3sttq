@@ -40,7 +40,7 @@ const ItemPreview = (props) => {
         alt="item"
         src={item.image || fallbackimg}
         className="card-img-top item-img"
-        style={{ borderRadius: "20px"}}
+        style={{ borderRadius: "20px" }}
       />
       <div className="card-body">
         <Link to={`/item/${item.slug}`} className="text-white">
