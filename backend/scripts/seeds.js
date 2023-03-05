@@ -1,60 +1,42 @@
-//TODO: seeds script should come here, so we'll be able to put some data in our local env
-
 const mongoose = require("mongoose");
 const connection = process.env.MONGODB_URI;
 mongoose.connect(connection);
 
-var User = mongoose.model("User");
-var Item = mongoose.model("Item");
-var Comment = mongoose.model("Comment");
-
-let userId;
-let itemId;
+const User = mongoose.model("User");
+const Item = mongoose.model("Item");
+const Comment = mongoose.model("Comment");
 
 async function seedDatabase() {
-   const users = Array.from(Array(100)).map((_item,i) => ({
-      username: `fakeuser${i}`,
-      email:`fakeuser${i}@anythink.com`,
-      bio: 'test bio',
-      favorites: [],
-      followings: [],
-   }))
-
-   for(let user of users){
-     const u = new User(user)
-     const dbItem = await u.save();
-     if(!userId){
-        userId = dbItem._id; 
-     }
-   }
-
-    const items = Array.from(Array(100)).map((_item,i) => ({
-      slug: `fakeitem${i}`,
-      title:`fake item ${i}`,
-      description: 'test description',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/330px-Image_created_with_a_mobile_phone.png',
-      comments: [],
-      tagList: ['test','tag'],
-      seller: userId
-  }))
-
-  for(let item of items){
-    const it = new Item(item)
-    const dbItem = await u.save();
-    if(!itemId){
-        itemId = dbItem._id
+  for (let i = 0; i < 100; i++) {
+    // add user
+    const user = { username: = `user${i}`, email: `user${i}@gmail.com` };
+    const options = { upsert: true, new: true };
+    const createdUser = await User.findOneAndUpdate(user, {}, options);
+    
+    // add item to user
+    const item = {
+      slug: `slug${i}`,
+      title: `title ${i}`,
+      description: `description ${i}`,
+      seller: createdUser,
+    };
+    const createdItem = await Item.findOneAndUpdate(item, {}, options);
+    
+    // add comments to item
+    if (!createdItem?.comments?.length) {
+      let commentIds = [];
+      for (let j = 0; j < 100; j++) {
+        const comment = new Comment({
+          body: `body ${j}`,
+          seller: createdUser,
+          item: createdItem,
+        });
+        await comment.save();
+        commentIds.push(comment._id);
+      }
+      createdItem.comments = commentIds;
+      await createdItem.save();
     }
-  }
-
-  const comments = Array.from(Array(100)).map((_item,i) => ({
-    body:'This is body',
-    seller: userId,
-    item: itemId
-  }))
-  
-  for(let comment of comments){
-    const c = new Comments(comment)
-     await u.save();
   }
 }
 
