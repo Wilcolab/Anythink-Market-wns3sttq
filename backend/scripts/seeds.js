@@ -9,7 +9,7 @@ const User = mongoose.model("User");
 const Item = mongoose.model("Item");
 
 const connectToDatabase = () => {
-  const connection = process.env.MONGODB_URI || "mongodb://localhost:27017/anythink-market";
+  const connection = process.env.MONGODB_URI;
   mongoose.connect(connection);
   mongoose.set("debug", true);
 };
@@ -57,3 +57,4 @@ main()
     console.log(`Error while running DB seed: ${err.message}`);
     process.exit(1);
   });
+  
