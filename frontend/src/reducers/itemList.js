@@ -3,6 +3,7 @@ import {
   ITEM_UNFAVORITED,
   SET_PAGE,
   APPLY_TAG_FILTER,
+  APPLY_TITLE_FILTER, // challenge
   HOME_PAGE_LOADED,
   HOME_PAGE_UNLOADED,
   CHANGE_TAB,
@@ -10,7 +11,6 @@ import {
   PROFILE_PAGE_UNLOADED,
   PROFILE_FAVORITES_PAGE_LOADED,
   PROFILE_FAVORITES_PAGE_UNLOADED,
-  CHANGE_SEARCH_TITLE
 } from "../constants/actionTypes";
 
 const reducer = (state = {}, action) => {
@@ -47,25 +47,31 @@ const reducer = (state = {}, action) => {
         tag: action.tag,
         currentPage: 0,
       };
+    // challenge
+    case APPLY_TITLE_FILTER:
+      return {
+        ...state,
+        pager: action.pager,
+        items: action.payload.items,
+        itemsCount: action.payload.itemsCount,
+        tab: null,
+        title: action.title,
+        currentPage: 0,
+        noResults: action.payload.items.length  === 0
+      }
+    // 
     case HOME_PAGE_LOADED:
       return {
         ...state,
         pager: action.pager,
-        tags: action.payload[0].tags,
         items: action.payload[1].items,
         itemsCount: action.payload[1].itemsCount,
-        currentPage: 0,
         tab: action.tab,
+        tags: action.payload[0].tags,
+        currentPage: 0,
       };
     case HOME_PAGE_UNLOADED:
       return {};
-    case CHANGE_SEARCH_TITLE: 
-      return {
-        ...state,
-        title: action.title,
-        items: action.payload.items,
-        itemsCount: action.payload.itemsCount
-      }
     case CHANGE_TAB:
       return {
         ...state,
