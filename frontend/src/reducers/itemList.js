@@ -10,6 +10,7 @@ import {
   PROFILE_PAGE_UNLOADED,
   PROFILE_FAVORITES_PAGE_LOADED,
   PROFILE_FAVORITES_PAGE_UNLOADED,
+  CHANGE_SEARCH_TITLE
 } from "../constants/actionTypes";
 
 const reducer = (state = {}, action) => {
@@ -58,6 +59,13 @@ const reducer = (state = {}, action) => {
       };
     case HOME_PAGE_UNLOADED:
       return {};
+    case CHANGE_SEARCH_TITLE: 
+      return {
+        ...state,
+        title: action.title,
+        items: action.payload.items,
+        itemsCount: action.payload.itemsCount
+      }
     case CHANGE_TAB:
       return {
         ...state,
