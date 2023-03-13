@@ -3,12 +3,10 @@ import _superagent from "superagent";
 
 const superagent = superagentPromise(_superagent, global.Promise);
 
-const BACKEND_URL =
+const API_ROOT =
   process.env.NODE_ENV !== "production"
-    ? process.env.REACT_APP_BACKEND_URL
-    : "https://api.anythink.market";
-
-const API_ROOT = `${BACKEND_URL}/api`;
+    ? "http://localhost:3000/api"
+    : "https://api.anythink.market/api";
 
 const encode = encodeURIComponent;
 const responseBody = (res) => res.body;
@@ -58,6 +56,13 @@ const Items = {
     requests.get(`/items?seller=${encode(seller)}&${limit(500, page)}`),
   byTag: (tag, page) =>
     requests.get(`/items?tag=${encode(tag)}&${limit(1000, page)}`),
+  byTitle: (title, page) =>
+    requests.get(
+      `/items?${title.length >= 3 ? "title=" + encode(title) + "&" : ""}${limit(
+        1000,
+        page
+      )}`
+    ),
   del: (slug) => requests.del(`/items/${slug}`),
   favorite: (slug) => requests.post(`/items/${slug}/favorite`),
   favoritedBy: (seller, page) =>

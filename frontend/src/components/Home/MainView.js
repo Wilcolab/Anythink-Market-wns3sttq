@@ -60,6 +60,7 @@ const TagFilterTab = (props) => {
 
 const mapStateToProps = (state) => ({
   ...state.itemList,
+  search: state.itemList.search,
   tags: state.home.tags,
   token: state.common.token,
 });
@@ -92,7 +93,7 @@ const MainView = (props) => {
         loading={props.loading}
         itemsCount={props.itemsCount}
         currentPage={props.currentPage}
-        noResults={props.noResults}
+        search={props.search}
       />
     </div>
   );
