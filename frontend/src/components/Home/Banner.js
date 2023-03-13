@@ -1,31 +1,32 @@
 import React from "react";
-import agent from "../../agent";
 import logo from "../../imgs/logo.png";
+import agent from "../../agent";
 
-const Banner = ({ onSearch, search }) => {
-  console.log("search", search);
-  const onInput = (event) => {
-    const newSearch = event.currentTarget.value;
-
-    onSearch(
-      newSearch,
-      (page) => agent.Items.byTitle(newSearch, page),
-      agent.Items.byTitle(newSearch)
+const Banner = (props) => {
+  const onSearchChange = (event) => {
+    props.onSearchFilter(
+      event.target.value,
+      (page) => agent.Items.byTitle(event.target.value),
+      agent.Items.byTitle(event.target.value)
     );
   };
-
   return (
     <div className="banner text-white">
       <div className="container p-4 text-center">
         <img src={logo} alt="banner" />
         <div>
-          <span id="get-part">A place to get</span>
-          <input
-            id="search-box"
-            placeholder="What is it that you truly desire?"
-            value={search}
-            onInput={onInput}
-          />
+          <span>A place to </span>
+          <span id="get-part">get</span>
+          <form>
+            <input
+              style={{ width: "250px" }}
+              type="text"
+              placeholder="what is it that you truly desire"
+              name="term"
+              id="search-box"
+              onChange={onSearchChange}
+            />
+          </form>
           <span> the cool stuff.</span>
         </div>
       </div>

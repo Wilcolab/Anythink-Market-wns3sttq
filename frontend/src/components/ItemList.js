@@ -8,15 +8,10 @@ const ItemList = (props) => {
   }
 
   if (props.items.length === 0) {
-    if (typeof props.search === "string" && props.search.length >= 3) {
-      return (
-        <div id="empty" className="py-4 no-items">
-          No items found for "{props.search}".
-        </div>
-      );
-    } else {
-      return <div className="py-4 no-items">No items are here... yet.</div>;
+    if (props.title) {
+      return <div id="empty">No items found for "<strong>{ props.title}</strong>"</div>
     }
+    return <div className="py-4 no-items">No items are here... yet.</div>;
   }
 
   return (

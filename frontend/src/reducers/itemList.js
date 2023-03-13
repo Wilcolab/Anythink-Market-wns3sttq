@@ -6,11 +6,11 @@ import {
   HOME_PAGE_LOADED,
   HOME_PAGE_UNLOADED,
   CHANGE_TAB,
+  APPLY_TITLE_FILTER,
   PROFILE_PAGE_LOADED,
   PROFILE_PAGE_UNLOADED,
   PROFILE_FAVORITES_PAGE_LOADED,
   PROFILE_FAVORITES_PAGE_UNLOADED,
-  UPDATE_TITLE_SEARCH_TERM,
 } from "../constants/actionTypes";
 
 const reducer = (state = {}, action) => {
@@ -47,6 +47,17 @@ const reducer = (state = {}, action) => {
         tag: action.tag,
         currentPage: 0,
       };
+    case APPLY_TITLE_FILTER:
+      return {
+        ...state,
+        pager: action.pager,
+        items: action.payload.items,
+        itemsCount: action.payload.itemsCount,
+        tab: null,
+        title: action.title,
+        currentPage: 0,
+        //noResults: action.payload.items.length === 0
+      };
     case HOME_PAGE_LOADED:
       return {
         ...state,
@@ -68,14 +79,8 @@ const reducer = (state = {}, action) => {
         tab: action.tab,
         currentPage: 0,
         tag: null,
-        search: null,
       };
     case PROFILE_PAGE_LOADED:
-    case UPDATE_TITLE_SEARCH_TERM:
-      return {
-        ...state,
-        titleSearchTerm: action.payload.titleSearchTerm,
-      };
     case PROFILE_FAVORITES_PAGE_LOADED:
       return {
         ...state,
