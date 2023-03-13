@@ -94,6 +94,7 @@ const MainView = (props) => {
         itemsCount={props.itemsCount}
         currentPage={props.currentPage}
         search={props.search}
+        noResults={props.noResults}
       />
     </div>
   );
